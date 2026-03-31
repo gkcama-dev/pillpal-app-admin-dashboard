@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>PillPal — Login</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+          rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css"/>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            background: #f1f5f9;
+            overflow: hidden;
+        }
+
+        /* LEFT PANEL */
+        .login-left {
+            flex: 0 0 50%;
+            background: linear-gradient(145deg, #0f172a 0%, #0d2b2b 50%, #0d9488 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 48px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-left::before {
+            content: '';
+            position: absolute;
+            top: -80px;
+            right: -80px;
+            width: 320px;
+            height: 320px;
+            border-radius: 50%;
+            background: rgba(13, 148, 136, 0.15);
+            pointer-events: none;
+        }
+
+        .login-left::after {
+            content: '';
+            position: absolute;
+            bottom: -100px;
+            left: -60px;
+            width: 280px;
+            height: 280px;
+            border-radius: 50%;
+            background: rgba(13, 148, 136, 0.1);
+            pointer-events: none;
+        }
+
+        .brand-section {
+            text-align: center;
+            z-index: 1;
+            margin-bottom: 48px;
+        }
+
+        .brand-logo {
+            width: 72px;
+            height: 72px;
+            background: linear-gradient(135deg, #0d9488, #0ea5e9);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 34px;
+            box-shadow: 0 20px 40px rgba(13, 148, 136, 0.4);
+        }
+
+        .brand-name {
+            font-size: 32px;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: -0.5px;
+        }
+
+        .brand-name span {
+            color: #0d9488;
+        }
+
+        .brand-tagline {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.55);
+            margin-top: 8px;
+        }
+
+        .features-list {
+            z-index: 1;
+            list-style: none;
+            width: 100%;
+            max-width: 320px;
+        }
+
+        .features-list li {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+            color: rgba(255, 255, 255, 0.75);
+            font-size: 14px;
+        }
+
+        .features-list li:last-child {
+            border-bottom: none;
+        }
+
+        .feature-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            background: rgba(13, 148, 136, 0.2);
+            border: 1px solid rgba(13, 148, 136, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+            color: #0d9488;
+            flex-shrink: 0;
+        }
+
+        /* RIGHT PANEL */
+        .login-right {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 24px;
+            overflow-y: auto;
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 420px;
+        }
+
+        .login-card-header {
+            margin-bottom: 32px;
+        }
+
+        .login-card-header h2 {
+            font-size: 26px;
+            font-weight: 800;
+            color: #1e293b;
+            letter-spacing: -0.5px;
+        }
+
+        .login-card-header p {
+            font-size: 14px;
+            color: #64748b;
+            margin-top: 6px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 8px;
+        }
+
+        .input-wrap {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-wrap .input-icon {
+            position: absolute;
+            left: 14px;
+            font-size: 15px;
+            color: #94a3b8;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .input-wrap .form-input {
+            width: 100%;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 12px 14px 12px 42px;
+            font-size: 14px;
+            color: #1e293b;
+            background: #fff;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .input-wrap .form-input:focus {
+            border-color: #0d9488;
+            box-shadow: 0 0 0 4px rgba(13, 148, 136, 0.12);
+        }
+
+        .input-wrap .toggle-pw {
+            position: absolute;
+            right: 14px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #94a3b8;
+            font-size: 15px;
+            padding: 4px;
+            transition: color 0.2s;
+        }
+
+        .input-wrap .toggle-pw:hover {
+            color: #1e293b;
+        }
+
+        .form-options {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+        }
+
+        .remember-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: #475569;
+            cursor: pointer;
+        }
+
+        .remember-label input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: #0d9488;
+            cursor: pointer;
+        }
+
+        .forgot-link {
+            font-size: 13px;
+            color: #0d9488;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .forgot-link:hover {
+            text-decoration: underline;
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 13px;
+            background: linear-gradient(135deg, #0d9488, #0ea5e9);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: opacity 0.2s, transform 0.15s, box-shadow 0.2s;
+            box-shadow: 0 4px 15px rgba(13, 148, 136, 0.35);
+        }
+
+        .btn-login:hover {
+            opacity: 0.92;
+            transform: translateY(-1px);
+            box-shadow: 0 8px 20px rgba(13, 148, 136, 0.4);
+        }
+
+        .btn-login:active {
+            transform: translateY(0);
+        }
+
+        .login-spinner {
+            display: none;
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 24px 0;
+        }
+
+        .divider::before, .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #e2e8f0;
+        }
+
+        .divider span {
+            font-size: 12.5px;
+            color: #94a3b8;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .demo-accounts {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .demo-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 10px;
+            background: #fff;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.2s;
+            width: 100%;
+            text-align: left;
+        }
+
+        .demo-btn:hover {
+            border-color: #0d9488;
+            background: rgba(13, 148, 136, 0.04);
+        }
+
+        .demo-btn .demo-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 700;
+            color: #fff;
+            flex-shrink: 0;
+        }
+
+        .demo-admin {
+            background: linear-gradient(135deg, #0d9488, #0ea5e9);
+        }
+
+        .demo-pharmacist {
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+        }
+
+        .demo-info .demo-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .demo-info .demo-email {
+            font-size: 11.5px;
+            color: #94a3b8;
+        }
+
+        .alert-error {
+            background: rgba(239, 68, 68, 0.08);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            border-radius: 10px;
+            padding: 10px 14px;
+            font-size: 13px;
+            color: #dc2626;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 16px;
+            display: none;
+        }
+
+        .alert-error.show {
+            display: flex;
+        }
+
+        /* Floating pills decoration */
+        .pill-deco {
+            position: absolute;
+            opacity: 0.06;
+            font-size: 60px;
+            color: #fff;
+            pointer-events: none;
+        }
+
+        .pill-deco.p1 {
+            top: 15%;
+            left: 8%;
+            transform: rotate(-20deg);
+        }
+
+        .pill-deco.p2 {
+            bottom: 20%;
+            right: 10%;
+            transform: rotate(25deg);
+            font-size: 40px;
+            opacity: 0.04;
+        }
+
+        .pill-deco.p3 {
+            top: 60%;
+            left: 20%;
+            transform: rotate(10deg);
+            font-size: 35px;
+            opacity: 0.05;
+        }
+
+        @media (max-width: 768px) {
+            .login-left {
+                display: none;
+            }
+
+            body {
+                overflow: auto;
+            }
+
+            .login-right {
+                padding: 40px 24px;
+                align-items: flex-start;
+                padding-top: 60px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Left decorative panel -->
+<div class="login-left">
+    <div class="pill-deco p1"><i class="fas fa-pills"></i></div>
+    <div class="pill-deco p2"><i class="fas fa-capsules"></i></div>
+    <div class="pill-deco p3"><i class="fas fa-prescription-bottle"></i></div>
+
+    <div class="brand-section">
+        <div class="brand-logo">💊</div>
+        <div class="brand-name">Pill<span>Pal</span></div>
+        <div class="brand-tagline">Medicine Management System</div>
+    </div>
+
+    <ul class="features-list">
+        <li>
+            <div class="feature-icon"><i class="fas fa-box-open"></i></div>
+            <div>
+                <div style="font-weight:600; margin-bottom:2px;">Smart Inventory Control</div>
+                <div style="font-size:12px; opacity:.6;">Real-time stock tracking & alerts</div>
+            </div>
+        </li>
+        <li>
+            <div class="feature-icon"><i class="fas fa-clock"></i></div>
+            <div>
+                <div style="font-weight:600; margin-bottom:2px;">Expiry Management</div>
+                <div style="font-size:12px; opacity:.6;">Automated expiry date monitoring</div>
+            </div>
+        </li>
+        <li>
+            <div class="feature-icon"><i class="fas fa-chart-line"></i></div>
+            <div>
+                <div style="font-weight:600; margin-bottom:2px;">Analytics & Reports</div>
+                <div style="font-size:12px; opacity:.6;">Insightful dashboards & data exports</div>
+            </div>
+        </li>
+        <li>
+            <div class="feature-icon"><i class="fas fa-shield-alt"></i></div>
+            <div>
+                <div style="font-weight:600; margin-bottom:2px;">Secure Role-Based Access</div>
+                <div style="font-size:12px; opacity:.6;">Admin, Pharmacist, Staff roles</div>
+            </div>
+        </li>
+    </ul>
+</div>
+
+<!-- Right login panel -->
+<div class="login-right">
+    <div class="login-card">
+
+        <div class="login-card-header">
+            <div style="display:flex; align-items:center; gap:10px; margin-bottom:24px;">
+                <div style="width:34px;height:34px;background:linear-gradient(135deg,#0d9488,#0ea5e9);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;">
+                    💊
+                </div>
+                <span style="font-size:17px;font-weight:700;color:#1e293b;">PillPal</span>
+            </div>
+            <h2>Welcome back! 👋</h2>
+            <p>Sign in to your admin account to continue</p>
+        </div>
+
+        <!-- Error alert -->
+        <div class="alert-error" id="alertError">
+            <i class="fas fa-exclamation-circle"></i>
+            <span id="alertMsg">Invalid email or password. Please try again.</span>
+        </div>
+
+        <form id="loginForm" onsubmit="handleLogin(event)">
+            <!-- Email -->
+            <div class="form-group">
+                <label class="form-label" for="email">Email Address</label>
+                <div class="input-wrap">
+                    <i class="fas fa-envelope input-icon"></i>
+                    <input type="email" id="email" class="form-input" placeholder="admin@pillpal.com"
+                           autocomplete="username"/>
+                </div>
+            </div>
+
+            <!-- Password -->
+            <div class="form-group">
+                <label class="form-label" for="password">Password</label>
+                <div class="input-wrap">
+                    <i class="fas fa-lock input-icon"></i>
+                    <input type="password" id="password" class="form-input" placeholder="Enter your password"
+                           autocomplete="current-password"/>
+                    <button type="button" class="toggle-pw" onclick="togglePassword()" id="pwToggle">
+                        <i class="fas fa-eye" id="eyeIcon"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Options -->
+            <div class="form-options">
+                <label class="remember-label">
+                    <input type="checkbox" id="remember"/> Remember me
+                </label>
+                <a href="#" class="forgot-link">Forgot password?</a>
+            </div>
+
+            <button type="submit" class="btn-login" id="loginBtn">
+                <div class="login-spinner" id="spinner"></div>
+                <span id="btnText"><i class="fas fa-sign-in-alt"></i>&nbsp; Sign In</span>
+            </button>
+        </form>
+
+        <p style="text-align:center; font-size:12px; color:#94a3b8; margin-top:28px;">
+            © 2024 PillPal Medicine Management. All rights reserved.
+        </p>
+
+    </div>
+</div>
+
+<script>
+
+    function togglePassword() {
+        const pwInput = document.getElementById('password');
+        const eyeIcon = document.getElementById('eyeIcon');
+        if (pwInput.type === 'password') {
+            pwInput.type = 'text';
+            eyeIcon.className = 'fas fa-eye-slash';
+        } else {
+            pwInput.type = 'password';
+            eyeIcon.className = 'fas fa-eye';
+        }
+    }
+
+    function handleLogin(e) {
+        e.preventDefault();
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value;
+        const alertError = document.getElementById('alertError');
+        const spinner = document.getElementById('spinner');
+        const btnText = document.getElementById('btnText');
+        const loginBtn = document.getElementById('loginBtn');
+
+        alertError.classList.remove('show');
+
+        if (!email || !password) {
+            document.getElementById('alertMsg').textContent = 'Please fill in all fields.';
+            alertError.classList.add('show');
+            return;
+        }
+
+        // Show loading state
+        spinner.style.display = 'block';
+        btnText.style.display = 'none';
+        loginBtn.disabled = true;
+
+        // Simulate async login
+        setTimeout(() => {
+            const valid = VALID_CREDENTIALS.find(c => c.email === email && c.password === password);
+            if (valid) {
+                btnText.innerHTML = '<i class="fas fa-check"></i>&nbsp; Signed In!';
+                btnText.style.display = 'block';
+                spinner.style.display = 'none';
+                loginBtn.style.background = 'linear-gradient(135deg, #10b981, #059669)';
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 700);
+            } else {
+                spinner.style.display = 'none';
+                btnText.style.display = 'block';
+                loginBtn.disabled = false;
+                document.getElementById('alertMsg').textContent = 'Invalid email or password. Please try again.';
+                alertError.classList.add('show');
+                document.getElementById('password').value = '';
+                document.getElementById('password').focus();
+            }
+        }, 1200);
+    }
+
+    // Auto-focus email
+    document.getElementById('email').focus();
+</script>
+
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+
+<script src="js/firebase-config.js"></script>
+
+<script src="js/login.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PillPal — Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Checked Session
+        if (localStorage.getItem("adminLoggedIn") !== "true") {
+            window.location.href = "login.html";
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+
+<!-- Sidebar Overlay -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<!-- ===================== SIDEBAR ===================== -->
+<aside class="sidebar" id="sidebar">
+    <a href="index.html" class="sidebar-logo">
+        <div class="logo-icon">💊</div>
+        <span class="logo-text">Pill<span>Pal</span></span>
+    </a>
+
+    <nav class="sidebar-nav">
+        <p class="nav-section-title">Main Menu</p>
+        <ul>
+            <li>
+                <a href="index.html" class="active">
+                    <span class="nav-icon"><i class="fas fa-th-large"></i></span>
+                    Dashboard
+                </a>
+            </li>
+            <li>
+                <a href="medicines.html">
+                    <span class="nav-icon"><i class="fas fa-pills"></i></span>
+                    Medicines
+                    <span class="badge-count">3</span>
+                </a>
+            </li>
+            <li>
+                <a href="users.html">
+                    <span class="nav-icon"><i class="fas fa-users"></i></span>
+                    Users
+                </a>
+            </li>
+            <li>
+                <a href="orders.html">
+                    <span class="nav-icon"><i class="fas fa-file-prescription"></i></span>
+                    Orders
+                    <span class="badge-count">7</span>
+                </a>
+            </li>
+
+        </ul>
+
+        <p class="nav-section-title">System</p>
+        <ul>
+            <li>
+                <a href="settings.html">
+                    <span class="nav-icon"><i class="fas fa-cog"></i></span>
+                    Settings
+                </a>
+            </li>
+            <li>
+                <a href="javascript:void(0)" onclick="logout()">
+                    <span class="nav-icon"><i class="fas fa-sign-out-alt"></i></span>
+                    Logout
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="sidebar-footer">
+        <div class="user-card">
+            <div class="user-avatar">A</div>
+            <div class="user-info">
+                <div class="user-name">Admin User</div>
+                <div class="user-role">Super Administrator</div>
+            </div>
+            <i class="fas fa-ellipsis-v" style="color:#475569; font-size:13px; margin-left:auto;"></i>
+        </div>
+    </div>
+</aside>
+
+<!-- ===================== MAIN WRAPPER ===================== -->
+<div class="main-wrapper">
+
+    <!-- TOP NAV -->
+    <header class="topbar">
+        <div class="topbar-left">
+            <button class="menu-toggle" id="menuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div>
+                <div class="topbar-title">Dashboard</div>
+                <div class="topbar-subtitle">Monday, April 6, 2026</div>
+            </div>
+        </div>
+        <div class="topbar-right">
+            <!-- Search -->
+            <div class="topbar-btn" style="width:auto; padding: 0 14px; gap: 8px; display:flex; font-size:13.5px;" id="globalSearch">
+                <i class="fas fa-search" style="font-size:13px;"></i>
+                <span style="color:#94a3b8;">Quick search…</span>
+                <kbd style="background:#f1f5f9;border:1px solid #e2e8f0;border-radius:4px;padding:1px 6px;font-size:10.5px;color:#64748b;">⌘K</kbd>
+            </div>
+            <!-- Notifications -->
+            <div style="position:relative;">
+                <button class="topbar-btn" id="notifBtn" title="Notifications">
+                    <i class="fas fa-bell"></i>
+                    <span class="notif-dot pulse"></span>
+                </button>
+                <div class="notif-dropdown" id="notifDropdown">
+                    <div class="notif-header">
+                        Notifications
+                        <span style="background:rgba(239,68,68,0.1);color:#dc2626;font-size:11px;padding:2px 8px;border-radius:20px;">4 new</span>
+                    </div>
+                    <div class="notif-item unread">
+                        <div class="notif-icon" style="background:rgba(239,68,68,0.1);color:#ef4444;"><i class="fas fa-exclamation-triangle"></i></div>
+                        <div class="notif-text">
+                            <div class="notif-title">Low Stock Alert</div>
+                            <div class="notif-sub">Amoxicillin — only 12 units left</div>
+                        </div>
+                    </div>
+                    <div class="notif-item unread">
+                        <div class="notif-icon" style="background:rgba(245,158,11,0.1);color:#f59e0b;"><i class="fas fa-clock"></i></div>
+                        <div class="notif-text">
+                            <div class="notif-title">Expiry Warning</div>
+                            <div class="notif-sub">Ibuprofen expires in 15 days</div>
+                        </div>
+                    </div>
+                    <div class="notif-item unread">
+                        <div class="notif-icon" style="background:rgba(59,130,246,0.1);color:#3b82f6;"><i class="fas fa-user-plus"></i></div>
+                        <div class="notif-text">
+                            <div class="notif-title">New User Registered</div>
+                            <div class="notif-sub">Dr. Sarah Johnson joined the platform</div>
+                        </div>
+                    </div>
+                    <div class="notif-item unread">
+                        <div class="notif-icon" style="background:rgba(239,68,68,0.1);color:#ef4444;"><i class="fas fa-times-circle"></i></div>
+                        <div class="notif-text">
+                            <div class="notif-title">Out of Stock</div>
+                            <div class="notif-sub">Metformin 500mg — 0 units</div>
+                        </div>
+                    </div>
+                    <div style="text-align:center;padding:12px;border-top:1px solid #e2e8f0;">
+                        <a href="reports.html" style="font-size:12.5px;color:#0d9488;font-weight:600;text-decoration:none;">View all notifications →</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Avatar -->
+            <div class="topbar-avatar" title="Admin Profile">A</div>
+        </div>
+    </header>
+
+    <!-- PAGE CONTENT -->
+    <main class="page-content fade-in">
+
+        <!-- Page Header -->
+        <div class="page-header">
+            <div class="page-header-title">
+                <div class="breadcrumb">
+                    <i class="fas fa-home" style="font-size:11px;"></i>
+                    <span>›</span>
+                    <span class="bc-active">Dashboard</span>
+                </div>
+                <h1>Welcome back, Admin! 👋</h1>
+                <p>Here's what's happening with your inventory today.</p>
+            </div>
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+            <div class="stat-card teal">
+                <div class="stat-icon-wrap teal"><i class="fas fa-pills"></i></div>
+                <div class="stat-info">
+                    <div class="stat-value" id="totalMeds">248</div>
+                    <div class="stat-label">Total Medicines</div>
+                    <span class="stat-change up"><i class="fas fa-arrow-up"></i> +12 this month</span>
+                </div>
+            </div>
+            <div class="stat-card blue">
+                <div class="stat-icon-wrap blue"><i class="fas fa-users"></i></div>
+                <div class="stat-info">
+                    <div class="stat-value" id="totalUsers">64</div>
+                    <div class="stat-label">Registered Users</div>
+                    <span class="stat-change up"><i class="fas fa-arrow-up"></i> +5 this week</span>
+                </div>
+            </div>
+            <div class="stat-card amber">
+                <div class="stat-icon-wrap amber"><i class="fas fa-exclamation-triangle"></i></div>
+                <div class="stat-info">
+                    <div class="stat-value" id="lowStockAlerts">8</div>
+                    <div class="stat-label">Low Stock Alerts</div>
+                    <span class="stat-change warn"><i class="fas fa-minus"></i> Needs attention</span>
+                </div>
+            </div>
+            <div class="stat-card green">
+                <div class="stat-icon-wrap green"><i class="fas fa-calendar-times"></i></div>
+                <div class="stat-info">
+                    <div class="stat-value" id="expiringMeds">15</div>
+                    <div class="stat-label">Expiring in 30 Days</div>
+                    <span class="stat-change down"><i class="fas fa-arrow-up"></i> +3 vs last month</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Content Grid -->
+        <div class="content-grid">
+
+            <!-- Stock Overview Chart -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <div class="title-icon"><i class="fas fa-chart-bar"></i></div>
+                        Monthly Stock Movement
+                    </div>
+                    <div style="display:flex;gap:8px;align-items:center;">
+                        <select style="border:1px solid #e2e8f0;border-radius:8px;padding:5px 10px;font-size:12px;font-family:Inter,sans-serif;color:#64748b;cursor:pointer;outline:none;">
+                            <option>Last 6 months</option>
+                            <option>Last 12 months</option>
+                            <option>This year</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="card-body" style="padding-top:16px;">
+                    <div style="height:260px;">
+                        <canvas id="stockChart"></canvas>
+                    </div>
+                </div>
+                <div style="display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid #e2e8f0;">
+                    <div class="report-stat">
+                        <div class="report-stat-val" style="font-size:20px;">1,248</div>
+                        <div class="report-stat-lbl">Units Restocked</div>
+                    </div>
+                    <div class="report-stat">
+                        <div class="report-stat-val" style="font-size:20px;color:#ef4444;">312</div>
+                        <div class="report-stat-lbl">Units Dispensed</div>
+                    </div>
+                    <div class="report-stat">
+                        <div class="report-stat-val" style="font-size:20px;color:#f59e0b;">48</div>
+                        <div class="report-stat-lbl">Units Expired</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Alerts & Activity Panel -->
+            <div style="display:flex;flex-direction:column;gap:20px;">
+
+                <!-- Low Stock Alerts -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <div class="title-icon" style="background:rgba(239,68,68,0.1);color:#ef4444;"><i class="fas fa-exclamation-triangle"></i></div>
+                            Low Stock Alerts
+                        </div>
+                        <a href="medicines.html" class="card-action">View All</a>
+                    </div>
+                    <div class="alert-list">
+                        <div class="alert-item">
+                            <div class="alert-icon danger"><i class="fas fa-pills"></i></div>
+                            <div class="alert-info">
+                                <div class="alert-med-name">Metformin 500mg</div>
+                                <div class="alert-detail">0 units remaining</div>
+                            </div>
+                            <span class="alert-tag danger">Out of Stock</span>
+                        </div>
+                        <div class="alert-item">
+                            <div class="alert-icon danger"><i class="fas fa-capsules"></i></div>
+                            <div class="alert-info">
+                                <div class="alert-med-name">Amoxicillin 250mg</div>
+                                <div class="alert-detail">12 units remaining</div>
+                            </div>
+                            <span class="alert-tag danger">Critical</span>
+                        </div>
+                        <div class="alert-item">
+                            <div class="alert-icon warning"><i class="fas fa-prescription-bottle"></i></div>
+                            <div class="alert-info">
+                                <div class="alert-med-name">Ibuprofen 400mg</div>
+                                <div class="alert-detail">28 units remaining</div>
+                            </div>
+                            <span class="alert-tag warning">Low</span>
+                        </div>
+                        <div class="alert-item">
+                            <div class="alert-icon warning"><i class="fas fa-tablets"></i></div>
+                            <div class="alert-info">
+                                <div class="alert-med-name">Paracetamol 500mg</div>
+                                <div class="alert-detail">35 units remaining</div>
+                            </div>
+                            <span class="alert-tag warning">Low</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Category Breakdown -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <div class="title-icon"><i class="fas fa-layer-group"></i></div>
+                            Category Breakdown
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div style="height:160px; display:flex; align-items:center; justify-content:center; position:relative;">
+                            <canvas id="categoryChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Recent Medicines Table -->
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">
+                    <div class="title-icon"><i class="fas fa-clock"></i></div>
+                    Recently Updated Medicines
+                </div>
+                <a href="medicines.html" class="card-action">Manage All →</a>
+            </div>
+            <div class="table-wrapper">
+                <table class="data-table" id="recentMedsTable">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Medicine Name</th>
+                        <th>Category</th>
+                        <th>Stock Level</th>
+                        <th>Expiry Date</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td style="color:#94a3b8;">001</td>
+                        <td>
+                            <div class="med-name">Amoxicillin 250mg</div>
+                            <div style="font-size:11.5px;color:#94a3b8;">Batch: AMX-2024-01</div>
+                        </td>
+                        <td><span class="med-category cat-antibiotic">Antibiotic</span></td>
+                        <td>
+                            <div style="display:flex;align-items:center;gap:8px;">
+                                <div class="progress-bar-track" style="width:80px;">
+                                    <div class="progress-bar-fill" style="width:8%;background:#ef4444;"></div>
+                                </div>
+                                <span style="font-size:12px;font-weight:600;color:#ef4444;">12</span>
+                            </div>
+                        </td>
+                        <td style="font-size:13px;">Sep 15, 2025</td>
+                        <td><span class="stock-badge stock-low"><span class="stock-dot"></span>Critical</span></td>
+                        <td>
+                            <div style="display:flex;gap:6px;">
+                                <button class="btn-action btn-edit" title="Edit" onclick="showToast('Edit Amoxicillin','info')"><i class="fas fa-pen"></i></button>
+                                <button class="btn-action btn-delete" title="Delete" onclick="confirmDelete('Amoxicillin 250mg', ()=>{})"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="color:#94a3b8;">002</td>
+                        <td>
+                            <div class="med-name">Ibuprofen 400mg</div>
+                            <div style="font-size:11.5px;color:#94a3b8;">Batch: IBU-2024-03</div>
+                        </td>
+                        <td><span class="med-category cat-analgesic">Analgesic</span></td>
+                        <td>
+                            <div style="display:flex;align-items:center;gap:8px;">
+                                <div class="progress-bar-track" style="width:80px;">
+                                    <div class="progress-bar-fill" style="width:18%;background:#f59e0b;"></div>
+                                </div>
+                                <span style="font-size:12px;font-weight:600;color:#f59e0b;">28</span>
+                            </div>
+                        </td>
+                        <td style="font-size:13px;">Apr 8, 2025</td>
+                        <td><span class="stock-badge stock-medium"><span class="stock-dot"></span>Low</span></td>
+                        <td>
+                            <div style="display:flex;gap:6px;">
+                                <button class="btn-action btn-edit" title="Edit" onclick="showToast('Edit Ibuprofen','info')"><i class="fas fa-pen"></i></button>
+                                <button class="btn-action btn-delete" title="Delete" onclick="confirmDelete('Ibuprofen 400mg', ()=>{})"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="color:#94a3b8;">003</td>
+                        <td>
+                            <div class="med-name">Vitamin C 500mg</div>
+                            <div style="font-size:11.5px;color:#94a3b8;">Batch: VTC-2024-07</div>
+                        </td>
+                        <td><span class="med-category cat-vitamin">Vitamin</span></td>
+                        <td>
+                            <div style="display:flex;align-items:center;gap:8px;">
+                                <div class="progress-bar-track" style="width:80px;">
+                                    <div class="progress-bar-fill" style="width:85%;background:#10b981;"></div>
+                                </div>
+                                <span style="font-size:12px;font-weight:600;color:#10b981;">320</span>
+                            </div>
+                        </td>
+                        <td style="font-size:13px;">Dec 20, 2025</td>
+                        <td><span class="stock-badge stock-high"><span class="stock-dot"></span>In Stock</span></td>
+                        <td>
+                            <div style="display:flex;gap:6px;">
+                                <button class="btn-action btn-edit" title="Edit" onclick="showToast('Edit Vitamin C','info')"><i class="fas fa-pen"></i></button>
+                                <button class="btn-action btn-delete" title="Delete" onclick="confirmDelete('Vitamin C 500mg', ()=>{})"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="color:#94a3b8;">004</td>
+                        <td>
+                            <div class="med-name">Metformin 500mg</div>
+                            <div style="font-size:11.5px;color:#94a3b8;">Batch: MET-2024-02</div>
+                        </td>
+                        <td><span class="med-category cat-cardiovascular">Cardiovascular</span></td>
+                        <td>
+                            <div style="display:flex;align-items:center;gap:8px;">
+                                <div class="progress-bar-track" style="width:80px;">
+                                    <div class="progress-bar-fill" style="width:0%;background:#ef4444;"></div>
+                                </div>
+                                <span style="font-size:12px;font-weight:600;color:#ef4444;">0</span>
+                            </div>
+                        </td>
+                        <td style="font-size:13px;">Jul 3, 2025</td>
+                        <td><span class="stock-badge stock-low"><span class="stock-dot"></span>Out of Stock</span></td>
+                        <td>
+                            <div style="display:flex;gap:6px;">
+                                <button class="btn-action btn-edit" title="Edit" onclick="showToast('Edit Metformin','info')"><i class="fas fa-pen"></i></button>
+                                <button class="btn-action btn-delete" title="Delete" onclick="confirmDelete('Metformin 500mg', ()=>{})"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="color:#94a3b8;">005</td>
+                        <td>
+                            <div class="med-name">Omeprazole 20mg</div>
+                            <div style="font-size:11.5px;color:#94a3b8;">Batch: OMP-2024-05</div>
+                        </td>
+                        <td><span class="med-category cat-antacid">Antacid</span></td>
+                        <td>
+                            <div style="display:flex;align-items:center;gap:8px;">
+                                <div class="progress-bar-track" style="width:80px;">
+                                    <div class="progress-bar-fill" style="width:60%;background:#10b981;"></div>
+                                </div>
+                                <span style="font-size:12px;font-weight:600;color:#10b981;">180</span>
+                            </div>
+                        </td>
+                        <td style="font-size:13px;">Mar 5, 2026</td>
+                        <td><span class="stock-badge stock-high"><span class="stock-dot"></span>In Stock</span></td>
+                        <td>
+                            <div style="display:flex;gap:6px;">
+                                <button class="btn-action btn-edit" title="Edit" onclick="showToast('Edit Omeprazole','info')"><i class="fas fa-pen"></i></button>
+                                <button class="btn-action btn-delete" title="Delete" onclick="confirmDelete('Omeprazole 20mg', ()=>{})"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </main>
+</div>
+
+<!-- Delete Confirm Modal -->
+<div class="modal-overlay" id="deleteConfirmModal">
+    <div class="modal" style="max-width:400px;">
+        <div class="modal-header">
+            <span class="modal-title">Confirm Delete</span>
+            <button class="modal-close" onclick="closeModal('deleteConfirmModal')"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="modal-body">
+            <div style="text-align:center; padding:8px 0;">
+                <div style="width:60px;height:60px;background:rgba(239,68,68,0.1);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:26px;color:#ef4444;">
+                    <i class="fas fa-trash-alt"></i>
+                </div>
+                <p style="font-size:15px;font-weight:600;color:#1e293b;margin-bottom:8px;">Delete Item?</p>
+                <p style="font-size:13.5px;color:#64748b;">Are you sure you want to delete <strong id="deleteItemName"></strong>? This action cannot be undone.</p>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-outline" onclick="closeModal('deleteConfirmModal')">Cancel</button>
+            <button class="btn-danger" id="confirmDeleteBtn"><i class="fas fa-trash"></i> Delete</button>
+        </div>
+    </div>
+</div>
+
+<script src="js/app.js"></script>
+<script>
+    // ---- Charts ----
+    // Stock Movement Chart
+    const stockCtx = document.getElementById('stockChart').getContext('2d');
+    new Chart(stockCtx, {
+        type: 'bar',
+        data: {
+            labels: ['Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar'],
+            datasets: [
+                {
+                    label: 'Restocked',
+                    data: [180, 220, 195, 260, 210, 240],
+                    backgroundColor: 'rgba(13,148,136,0.85)',
+                    borderRadius: 6,
+                    borderSkipped: false,
+                },
+                {
+                    label: 'Dispensed',
+                    data: [120, 145, 130, 160, 155, 170],
+                    backgroundColor: 'rgba(14,165,233,0.7)',
+                    borderRadius: 6,
+                    borderSkipped: false,
+                },
+                {
+                    label: 'Expired',
+                    data: [8, 12, 5, 14, 6, 10],
+                    backgroundColor: 'rgba(245,158,11,0.7)',
+                    borderRadius: 6,
+                    borderSkipped: false,
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'top',
+                    labels: {
+                        font: { family: 'Inter', size: 12 },
+                        usePointStyle: true,
+                        pointStyle: 'circle',
+                        padding: 16,
+                    }
+                },
+                tooltip: {
+                    backgroundColor: '#1e293b',
+                    titleFont: { family: 'Inter', size: 12 },
+                    bodyFont: { family: 'Inter', size: 12 },
+                    cornerRadius: 8,
+                    padding: 10,
+                }
+            },
+            scales: {
+                x: {
+                    grid: { display: false },
+                    ticks: { font: { family: 'Inter', size: 12 }, color: '#94a3b8' }
+                },
+                y: {
+                    grid: { color: 'rgba(0,0,0,0.04)' },
+                    ticks: { font: { family: 'Inter', size: 11 }, color: '#94a3b8' }
+                }
+            }
+        }
+    });
+
+    // Category Donut Chart
+    const catCtx = document.getElementById('categoryChart').getContext('2d');
+    new Chart(catCtx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Antibiotic', 'Analgesic', 'Vitamin', 'Antacid', 'Cardiovascular', 'Other'],
+            datasets: [{
+                data: [45, 68, 82, 33, 41, 28],
+                backgroundColor: ['#7c3aed','#2563eb','#059669','#d97706','#dc2626','#64748b'],
+                borderWidth: 3,
+                borderColor: '#fff',
+                hoverOffset: 5,
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            cutout: '68%',
+            plugins: {
+                legend: {
+                    position: 'right',
+                    labels: {
+                        font: { family: 'Inter', size: 11 },
+                        usePointStyle: true,
+                        pointStyle: 'circle',
+                        padding: 10,
+                        boxWidth: 8,
+                    }
+                },
+                tooltip: {
+                    backgroundColor: '#1e293b',
+                    titleFont: { family: 'Inter', size: 12 },
+                    bodyFont: { family: 'Inter', size: 12 },
+                    cornerRadius: 8,
+                    padding: 10,
+                }
+            }
+        }
+    });
+
+    // Animate stat counters
+    function animateCount(id, target) {
+        const el = document.getElementById(id);
+        if (!el) return;
+        let count = 0;
+        const step = Math.max(1, Math.floor(target / 40));
+        const interval = setInterval(() => {
+            count = Math.min(count + step, target);
+            el.textContent = count;
+            if (count >= target) clearInterval(interval);
+        }, 30);
+    }
+
+    animateCount('totalMeds', 248);
+    animateCount('totalUsers', 64);
+    animateCount('lowStockAlerts', 8);
+    animateCount('expiringMeds', 15);
+</script>
+<script src="js/dashboard.js"></script>
+</body>
+</html>

@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PillPal — Settings</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<aside class="sidebar" id="sidebar">
+    <a href="index.html" class="sidebar-logo">
+        <div class="logo-icon">💊</div>
+        <span class="logo-text">Pill<span>Pal</span></span>
+    </a>
+    <nav class="sidebar-nav">
+        <p class="nav-section-title">Main Menu</p>
+        <ul>
+            <li><a href="index.html"><span class="nav-icon"><i class="fas fa-th-large"></i></span>Dashboard</a></li>
+            <li><a href="medicines.html"><span class="nav-icon"><i class="fas fa-pills"></i></span>Medicines<span class="badge-count">3</span></a></li>
+            <li><a href="users.html"><span class="nav-icon"><i class="fas fa-users"></i></span>Users</a></li>
+            <li><a href="orders.html"><span class="nav-icon"><i class="fas fa-file-prescription"></i></span>Orders<span class="badge-count">7</span></a></li>
+            <li><a href="reports.html"><span class="nav-icon"><i class="fas fa-chart-bar"></i></span>Reports</a></li>
+        </ul>
+        <p class="nav-section-title">System</p>
+        <ul>
+            <li><a href="settings.html" class="active"><span class="nav-icon"><i class="fas fa-cog"></i></span>Settings</a></li>
+            <li><a href="login.html"><span class="nav-icon"><i class="fas fa-sign-out-alt"></i></span>Logout</a></li>
+        </ul>
+    </nav>
+    <div class="sidebar-footer">
+        <div class="user-card">
+            <div class="user-avatar">A</div>
+            <div class="user-info"><div class="user-name">Admin User</div><div class="user-role">Super Administrator</div></div>
+        </div>
+    </div>
+</aside>
+
+<div class="main-wrapper">
+    <header class="topbar">
+        <div class="topbar-left">
+            <button class="menu-toggle" id="menuToggle"><i class="fas fa-bars"></i></button>
+            <div>
+                <div class="topbar-title">Settings</div>
+                <div class="topbar-subtitle">System Configuration</div>
+            </div>
+        </div>
+        <div class="topbar-right">
+            <div style="position:relative;">
+                <button class="topbar-btn" id="notifBtn"><i class="fas fa-bell"></i><span class="notif-dot pulse"></span></button>
+                <div class="notif-dropdown" id="notifDropdown">
+                    <div class="notif-header">Notifications</div>
+                    <div class="notif-item"><div class="notif-text"><div class="notif-title">All clear</div><div class="notif-sub">No new notifications</div></div></div>
+                </div>
+            </div>
+            <a href="login.html" class="topbar-btn"><i class="fas fa-sign-out-alt"></i></a>
+            <div class="topbar-avatar">A</div>
+        </div>
+    </header>
+
+    <main class="page-content fade-in">
+        <div class="page-header">
+            <div class="page-header-title">
+                <div class="breadcrumb">
+                    <a href="index.html" style="color:#64748b;text-decoration:none;"><i class="fas fa-home" style="font-size:11px;"></i></a>
+                    <span>›</span><span class="bc-active">Settings</span>
+                </div>
+                <h1>System Settings</h1>
+                <p>Configure your PillPal application preferences.</p>
+            </div>
+            <button class="btn-primary" onclick="saveAll()">
+                <i class="fas fa-save"></i> Save All Changes
+            </button>
+        </div>
+
+        <!-- Settings Layout -->
+        <div style="display:grid;grid-template-columns:220px 1fr;gap:20px;align-items:start;">
+
+            <!-- Settings Sidebar Nav -->
+            <div class="card">
+                <div class="card-body" style="padding:8px;">
+                    <ul id="settingsNav" style="list-style:none;padding:0;">
+                        <li><button onclick="showSection('profile')" class="settings-nav-btn active" data-section="profile"><i class="fas fa-user-circle"></i> Profile</button></li>
+                        <li><button onclick="showSection('notifications')" class="settings-nav-btn" data-section="notifications"><i class="fas fa-bell"></i> Notifications</button></li>
+                        <li><button onclick="showSection('inventory')" class="settings-nav-btn" data-section="inventory"><i class="fas fa-boxes"></i> Inventory</button></li>
+                        <li><button onclick="showSection('security')" class="settings-nav-btn" data-section="security"><i class="fas fa-shield-alt"></i> Security</button></li>
+                        <li><button onclick="showSection('appearance')" class="settings-nav-btn" data-section="appearance"><i class="fas fa-palette"></i> Appearance</button></li>
+                        <li><button onclick="showSection('system')" class="settings-nav-btn" data-section="system"><i class="fas fa-server"></i> System</button></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Settings Content -->
+            <div>
+
+                <!-- Profile Section -->
+                <div id="section-profile" class="settings-pane card">
+                    <div class="card-header">
+                        <div class="card-title"><div class="title-icon"><i class="fas fa-user-circle"></i></div>Profile Settings</div>
+                    </div>
+                    <div class="card-body">
+                        <div style="display:flex;align-items:center;gap:20px;margin-bottom:24px;padding:20px;background:#f8fafc;border-radius:14px;border:1px solid #e2e8f0;">
+                            <div style="width:72px;height:72px;background:linear-gradient(135deg,#0d9488,#0ea5e9);border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:700;color:#fff;flex-shrink:0;">A</div>
+                            <div style="flex:1;">
+                                <div style="font-size:17px;font-weight:700;color:#1e293b;">Admin User</div>
+                                <div style="font-size:13px;color:#64748b;margin-top:2px;">admin@pillpal.com</div>
+                                <div style="margin-top:10px;display:flex;gap:8px;">
+                                    <button class="btn-outline" style="font-size:12px;padding:6px 12px;" onclick="showToast('Upload feature coming soon','info')">
+                                        <i class="fas fa-camera"></i> Change Photo
+                                    </button>
+                                    <button class="btn-outline" style="font-size:12px;padding:6px 12px;color:#ef4444;border-color:rgba(239,68,68,0.3);" onclick="showToast('Photo removed','success')">
+                                        Remove
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">First Name</label>
+                                <input type="text" class="form-control" value="Admin" />
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Last Name</label>
+                                <input type="text" class="form-control" value="User" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Email Address</label>
+                            <input type="email" class="form-control" value="admin@pillpal.com" />
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Phone Number</label>
+                                <input type="tel" class="form-control" value="+1 (555) 000-0001" />
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Department</label>
+                                <select class="form-control">
+                                    <option selected>Administration</option>
+                                    <option>Pharmacy</option>
+                                    <option>Emergency</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Bio</label>
+                            <textarea class="form-control" rows="2" style="resize:vertical;">Lead administrator for PillPal Medicine Management System.</textarea>
+                        </div>
+                        <button class="btn-primary" onclick="showToast('Profile updated!','success')">
+                            <i class="fas fa-save"></i> Save Profile
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Notifications Section -->
+                <div id="section-notifications" class="settings-pane card" style="display:none;">
+                    <div class="card-header">
+                        <div class="card-title"><div class="title-icon"><i class="fas fa-bell"></i></div>Notification Preferences</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="settings-section">
+                            <div class="settings-section-title">Alert Types</div>
+                            <div class="setting-row">
+                                <div class="setting-info">
+                                    <div class="setting-title">Low Stock Alerts</div>
+                                    <div class="setting-desc">Notify when medicine stock falls below threshold</div>
+                                </div>
+                                <div class="toggle-switch on"><div class="toggle-knob"></div></div>
+                            </div>
+                            <div class="setting-row">
+                                <div class="setting-info">
+                                    <div class="setting-title">Expiry Warnings</div>
+                                    <div class="setting-desc">Alert 30, 15, and 7 days before expiry</div>
+                                </div>
+                                <div class="toggle-switch on"><div class="toggle-knob"></div></div>
+                            </div>
+                            <div class="setting-row">
+                                <div class="setting-info">
+                                    <div class="setting-title">New User Registrations</div>
+                                    <div class="setting-desc">Email when a new user joins the platform</div>
+                                </div>
+                                <div class="toggle-switch on"><div class="toggle-knob"></div></div>
+                            </div>
+                            <div class="setting-row">
+                                <div class="setting-info">
+                                    <div class="setting-title">System Reports</div>
+                                    <div class="setting-desc">Weekly automated report delivery</div>
+                                </div>
+                                <div class="toggle-switch"><div class="toggle-knob"></div></div>
+                            </div>
+                        </div>
+                        <div class="settings-section">
+                            <div class="settings-section-title">Delivery Channels</div>
+                            <div class="setting-row">
+                                <div class="setting-info">
+                                    <div class="setting-title">Email Notifications</div>
+                                    <div class="setting-desc">admin@pillpal.com</div>
+                                </div>
+                                <div class="toggle-switch on"><div class="toggle-knob"></div></div>
+                            </div>
+                            <div class="setting-row">
+                                <div class="setting-info">
+                                    <div class="setting-title">In-App Notifications</div>
+                                    <div class="setting-desc">Notification bell in dashboard</div>
+                                </div>
+                                <div class="toggle-switch on"><div class="toggle-knob"></div></div>
+                            </div>
+                            <div class="setting-row">
+                                <div class="setting-info">
+                                    <div class="setting-title">SMS Alerts</div>
+                                    <div class="setting-desc">Critical alerts via SMS (requires phone number)</div>
+                                </div>
+                                <div class="toggle-switch"><div class="toggle-knob"></div></div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Low Stock Threshold</label>
+                            <input type="number" class="form-control" value="50" style="max-width:200px;" />
+                            <p style="font-size:12px;color:#94a3b8;margin-top:5px;">Alert when stock drops below this number of units</p>
+                        </div>
+                        <button class="btn-primary" onclick="showToast('Notification settings saved!','success')">
+                            <i class="fas fa-save"></i> Save Preferences
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Inventory Section -->
+                <div id="section-inventory" class="settings-pane card" style="display:none;">
+                    <div class="card-header">
+                        <div class="card-title"><div class="title-icon"><i class="fas fa-boxes"></i></div>Inventory Settings</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="settings-section">
+                            <div class="settings-section-title">Stock Management</div>
+                            <div class="setting-row">
+                                <div class="setting-info">
+                                    <div class="setting-title">Auto Reorder</div>
+                                    <div class="setting-desc">Automatically generate purchase orders when stock is low</div>
+                                </div>
+                                <div class="toggle-switch"><div class="toggle-knob"></div></div>
+                            </div>
+                            <div class="setting-row">
+                                <div class="setting-info">
+                                    <div class="setting-title">FIFO Dispensing</div>
+                                    <div class="setting-desc">Dispense oldest stock first (First In, First Out)</div>
+                                </div>
+                                <div class="toggle-switch on"><div class="toggle-knob"></div></div>
+                            </div>
+                            <div class="setting-row">
+                                <div class="setting-info">
+                                    <div class="setting-title">Batch Tracking</div>
+                                    <div class="setting-desc">Track individual batches for recalls and audits</div>
+                                </div>
+                                <div class="toggle-switch on"><div class="toggle-knob"></div></div>
+                            </div>
+                        </div>
+                        <div class="settings-section">
+                            <div class="settings-section-title">Default Values</div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">Default Low Stock Level</label>
+                                    <input type="number" class="form-control" value="50" />
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Expiry Warning Days</label>
+                                    <input type="number" class="form-control" value="30" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Default Currency</label>
+                                <select class="form-control" style="max-width:220px;">
+                                    <option selected>USD ($)</option>
+                                    <option>EUR (€)</option>
+                                    <option>GBP (£)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button class="btn-primary" onclick="showToast('Inventory settings saved!','success')">
+                            <i class="fas fa-save"></i> Save Settings
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Security Section -->
+                <div id="section-security" class="settings-pane card" style="display:none;">
+                    <div class="card-header">
+                        <div class="card-title"><div class="title-icon"><i class="fas fa-shield-alt"></i></div>Security Settings</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="settings-section">
+                            <div class="settings-section-title">Change Password</div>
+                            <div class="form-group">
+                                <label class="form-label">Current Password</label>
+                                <input type="password" class="form-control" placeholder="Enter current password" style="max-width:360px;" />
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">New Password</label>
+                                <input type="password" class="form-control" placeholder="At least 8 characters" style="max-width:360px;" />
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Confirm New Password</label>
+                                <input type="password" class="form-control" placeholder="Repeat new password" style="max-width:360px;" />
+                            </div>
+                            <button class="btn-primary" onclick="showToast('Password updated successfully!','success')">
+                                <i class="fas fa-lock"></i> Update Password
+                            </button>
+                        </div>
+                        <div class="settings-section" style="margin-top:28px;">
+                            <div class="settings-section-title">Access & Sessions</div>
+                            <div class="setting-row">
+                                <div class="setting-info">
+                                    <div class="setting-title">Two-Factor Authentication</div>
+                                    <div class="setting-desc">Add an extra layer of security via TOTP or SMS</div>
+                                </div>
+                                <div class="toggle-switch"><div class="toggle-knob"></div></div>
+                            </div>
+                            <div class="setting-row">
+                                <div class="setting-info">
+                                    <div class="setting-title">Session Timeout</div>
+                                    <div class="setting-desc">Auto-logout after inactivity period</div>
+                                </div>
+                                <select class="form-control" style="max-width:160px;padding:6px 10px;">
+                                    <option>15 minutes</option>
+                                    <option selected>30 minutes</option>
+                                    <option>1 hour</option>
+                                    <option>Never</option>
+                                </select>
+                            </div>
+                            <div class="setting-row">
+                                <div class="setting-info">
+                                    <div class="setting-title">Login History</div>
+                                    <div class="setting-desc">Track all login attempts and IP addresses</div>
+                                </div>
+                                <div class="toggle-switch on"><div class="toggle-knob"></div></div>
+                            </div>
+                        </div>
+                        <div class="settings-section" style="margin-top:28px;">
+                            <div class="settings-section-title">Danger Zone</div>
+                            <div style="padding:16px;background:rgba(239,68,68,0.04);border:1px solid rgba(239,68,68,0.15);border-radius:12px;">
+                                <p style="font-size:13.5px;font-weight:600;color:#1e293b;margin-bottom:6px;">Clear All Sessions</p>
+                                <p style="font-size:12.5px;color:#64748b;margin-bottom:12px;">This will log out all active sessions on all devices.</p>
+                                <button class="btn-danger" onclick="showToast('All sessions cleared.','warning')">
+                                    <i class="fas fa-sign-out-alt"></i> Clear All Sessions
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Appearance Section -->
+                <div id="section-appearance" class="settings-pane card" style="display:none;">
+                    <div class="card-header">
+                        <div class="card-title"><div class="title-icon"><i class="fas fa-palette"></i></div>Appearance</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="settings-section">
+                            <div class="settings-section-title">Theme Color</div>
+                            <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px;">
+                                ${[
+                                { color: '#0d9488', label: 'Teal (Default)', active: true },
+                                { color: '#007bff', label: 'Blue' },
+                                { color: '#8b5cf6', label: 'Purple' },
+                                { color: '#10b981', label: 'Green' },
+                                { color: '#f59e0b', label: 'Amber' },
+                                { color: '#ec4899', label: 'Pink' },
+                                ].map(c => `
+                                <button onclick="selectTheme(this,'${c.color}')"
+                                        style="display:flex;align-items:center;gap:8px;padding:8px 14px;border-radius:10px;border:2px solid ${c.active ? c.color : '#e2e8f0'};background:${c.active ? c.color+'15' : '#fff'};cursor:pointer;font-size:12.5px;font-weight:600;color:#1e293b;font-family:Inter,sans-serif;transition:all 0.2s;">
+                                    <span style="width:16px;height:16px;background:${c.color};border-radius:50%;"></span>
+                                    ${c.label}
+                                    ${c.active ? '<i class="fas fa-check" style="color:'+c.color+';font-size:10px;"></i>' : ''}
+                                </button>
+                                `).join('')}
+                            </div>
+                        </div>
+                        <div class="settings-section">
+                            <div class="settings-section-title">Interface Preferences</div>
+                            <div class="setting-row">
+                                <div class="setting-info">
+                                    <div class="setting-title">Compact Mode</div>
+                                    <div class="setting-desc">Reduce spacing for denser information display</div>
+                                </div>
+                                <div class="toggle-switch"><div class="toggle-knob"></div></div>
+                            </div>
+                            <div class="setting-row">
+                                <div class="setting-info">
+                                    <div class="setting-title">Animated Transitions</div>
+                                    <div class="setting-desc">Enable smooth page and component animations</div>
+                                </div>
+                                <div class="toggle-switch on"><div class="toggle-knob"></div></div>
+                            </div>
+                            <div class="setting-row">
+                                <div class="setting-info">
+                                    <div class="setting-title">Show Sidebar Labels</div>
+                                    <div class="setting-desc">Display text labels alongside nav icons</div>
+                                </div>
+                                <div class="toggle-switch on"><div class="toggle-knob"></div></div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Font Size</label>
+                            <select class="form-control" style="max-width:200px;">
+                                <option>Small (13px)</option>
+                                <option selected>Medium (14px)</option>
+                                <option>Large (16px)</option>
+                            </select>
+                        </div>
+                        <button class="btn-primary" onclick="showToast('Appearance settings saved!','success')">
+                            <i class="fas fa-save"></i> Save Appearance
+                        </button>
+                    </div>
+                </div>
+
+                <!-- System Section -->
+                <div id="section-system" class="settings-pane card" style="display:none;">
+                    <div class="card-header">
+                        <div class="card-title"><div class="title-icon"><i class="fas fa-server"></i></div>System Settings</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="settings-section">
+                            <div class="settings-section-title">Application Info</div>
+                            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
+                                ${[
+                                { label: 'Application', val: 'PillPal v2.4.1' },
+                                { label: 'Build Date', val: 'March 24, 2025' },
+                                { label: 'Database', val: 'Connected ✓' },
+                                { label: 'License', val: 'Enterprise' },
+                                ].map(item => `
+                                <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:12px 14px;">
+                                    <div style="font-size:11px;color:#94a3b8;text-transform:uppercase;letter-spacing:0.8px;font-weight:600;">${item.label}</div>
+                                    <div style="font-size:13.5px;font-weight:700;color:#1e293b;margin-top:4px;">${item.val}</div>
+                                </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                        <div class="settings-section">
+                            <div class="settings-section-title">Backup & Maintenance</div>
+                            <div class="setting-row">
+                                <div class="setting-info">
+                                    <div class="setting-title">Auto Backup</div>
+                                    <div class="setting-desc">Daily automated database backup at 2:00 AM</div>
+                                </div>
+                                <div class="toggle-switch on"><div class="toggle-knob"></div></div>
+                            </div>
+                            <div class="setting-row">
+                                <div class="setting-info">
+                                    <div class="setting-title">Maintenance Mode</div>
+                                    <div class="setting-desc">Temporarily block user access for system updates</div>
+                                </div>
+                                <div class="toggle-switch"><div class="toggle-knob"></div></div>
+                            </div>
+                        </div>
+                        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:8px;">
+                            <button class="btn-outline" onclick="showToast('Backup started...','info')"><i class="fas fa-database"></i> Manual Backup</button>
+                            <button class="btn-outline" onclick="showToast('Cache cleared!','success')"><i class="fas fa-broom"></i> Clear Cache</button>
+                            <button class="btn-outline" onclick="showToast('System logs downloaded','success')"><i class="fas fa-file-alt"></i> Download Logs</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+</div>
+
+<style>
+    .settings-nav-btn {
+        width: 100%;
+        text-align: left;
+        padding: 10px 14px;
+        border-radius: 9px;
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        font-size: 13.5px;
+        font-family: 'Inter', sans-serif;
+        color: #64748b;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        transition: all 0.15s;
+        margin-bottom: 2px;
+    }
+    .settings-nav-btn:hover { background: #f1f5f9; color: #1e293b; }
+    .settings-nav-btn.active { background: rgba(13,148,136,0.1); color: #0d9488; font-weight: 600; }
+    .settings-nav-btn i { width: 16px; text-align: center; }
+</style>
+
+<script src="js/app.js"></script>
+<script>
+    function showSection(name) {
+        document.querySelectorAll('.settings-pane').forEach(p => p.style.display = 'none');
+        document.getElementById('section-' + name).style.display = 'block';
+        document.querySelectorAll('.settings-nav-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.section === name);
+        });
+    }
+
+    function selectTheme(btn, color) {
+        document.querySelectorAll('[onclick^="selectTheme"]').forEach(b => {
+            b.style.borderColor = '#e2e8f0';
+            b.style.background = '#fff';
+        });
+        btn.style.borderColor = color;
+        btn.style.background = color + '15';
+        showToast('Theme color updated! (Preview)', 'success');
+    }
+
+    function saveAll() {
+        showToast('All settings saved successfully!', 'success');
+    }
+</script>
+</body>
+</html>

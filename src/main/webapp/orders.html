@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PillPal — Order Management</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="css/style.css" />
+
+    <style>
+
+        .status-dropdown-container {
+            position: relative;
+            width: 100%;
+            margin-top: 5px;
+        }
+
+        /* Dropdown එකේ පෙනුම */
+        .custom-select {
+            width: 100%;
+            height: 54px;
+            padding: 0 45px 0 18px;
+            font-size: 14.5px;
+            font-weight: 600;
+            color: #1e293b;
+            background-color: #ffffff;
+            border: 2px solid #e2e8f0;
+            border-radius: 14px;
+            appearance: none; /* පරණ arrow එක ඉවත් කරයි */
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            outline: none;
+            display: block;
+        }
+
+
+        .custom-select:hover:not(:disabled) {
+            border-color: #0d9488;
+            background-color: #f0fdfa;
+        }
+
+
+        .custom-select:focus {
+            border-color: #0d9488;
+            box-shadow: 0 0 0 4px rgba(13, 148, 136, 0.15);
+        }
+
+
+        .custom-select:disabled {
+            background-color: #f8fafc;
+            color: #94a3b8;
+            cursor: not-allowed;
+            border-color: #e2e8f0;
+            opacity: 0.8;
+        }
+
+
+        .dropdown-icon {
+            position: absolute;
+            right: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #64748b;
+            pointer-events: none;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .status-dropdown-container:focus-within .dropdown-icon {
+            color: #0d9488;
+        }
+
+        /* ===================== ORDER-SPECIFIC STYLES ===================== */
+        .status-pending  { background: rgba(245,158,11,0.12); color: #b45309; border: 1px solid rgba(245,158,11,0.3); }
+        .status-approved { background: rgba(16,185,129,0.12); color: #065f46; border: 1px solid rgba(16,185,129,0.3); }
+        .status-rejected { background: rgba(239,68,68,0.12);  color: #991b1b; border: 1px solid rgba(239,68,68,0.3); }
+        .status-delivered{ background: rgba(59,130,246,0.12); color: #1e40af; border: 1px solid rgba(59,130,246,0.3); }
+
+        .order-status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            border-radius: 999px;
+            font-size: 11.5px;
+            font-weight: 700;
+            letter-spacing: 0.2px;
+            white-space: nowrap;
+        }
+
+        .order-status-badge .status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .status-pending .status-dot  { background: #f59e0b; box-shadow: 0 0 0 2px rgba(245,158,11,0.25); }
+        .status-approved .status-dot { background: #10b981; box-shadow: 0 0 0 2px rgba(16,185,129,0.25); }
+        .status-rejected .status-dot { background: #ef4444; box-shadow: 0 0 0 2px rgba(239,68,68,0.25); }
+        .status-delivered .status-dot{ background: #3b82f6; box-shadow: 0 0 0 2px rgba(59,130,246,0.25); }
+
+        /* ===================== PRESCRIPTION VIEWER ===================== */
+        .rx-image-container {
+            position: relative;
+            background: #0f172a;
+            overflow: hidden;
+            cursor: zoom-in;
+        }
+
+        .rx-image-container img {
+            width: 100%;
+            display: block;
+            transition: transform 0.3s ease;
+            object-fit: contain;
+            background: #1e293b;
+        }
+
+        /* LIGHTBOX */
+        .lightbox-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.93);
+            z-index: 3000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s ease;
+        }
+        .lightbox-overlay.active { opacity: 1; pointer-events: all; }
+        .lightbox-inner img { max-width: 90vw; max-height: 80vh; border-radius: 12px; }
+
+        .order-row { cursor: pointer; transition: background 0.15s; }
+        .order-row:hover { background: rgba(13,148,136,0.03) !important; }
+
+        .order-id-cell { font-family: 'Courier New', monospace; font-size: 12.5px; font-weight: 700; color: var(--primary); }
+        .user-cell { display: flex; align-items: center; gap: 10px; }
+        .user-mini-avatar { width: 34px; height: 34px; border-radius: 50%; object-fit: cover; }
+
+        .filter-tabs { display: flex; gap: 4px; padding: 4px; background: #f1f5f9; border-radius: 12px; }
+        .filter-tab { padding: 7px 16px; border-radius: 9px; font-size: 12.5px; font-weight: 600; border: none; background: transparent; cursor: pointer; }
+        .filter-tab.active { background: #fff; color: var(--primary); box-shadow: 0 1px 4px rgba(0,0,0,0.1); }
+        .tab-count { background: rgba(13,148,136,0.12); color: #0d9488; font-size: 10px; padding: 1px 6px; border-radius: 20px; margin-left: 4px; }
+
+        .detail-section-title {
+            font-size: 10.5px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<aside class="sidebar" id="sidebar">
+    <a href="index.html" class="sidebar-logo">
+        <div class="logo-icon">💊</div>
+        <span class="logo-text">Pill<span>Pal</span></span>
+    </a>
+
+    <nav class="sidebar-nav">
+        <p class="nav-section-title">Main Menu</p>
+        <ul>
+            <li><a href="index.html"><span class="nav-icon"><i class="fas fa-th-large"></i></span>Dashboard</a></li>
+            <li><a href="medicines.html"><span class="nav-icon"><i class="fas fa-pills"></i></span>Medicines<span class="badge-count">3</span></a></li>
+            <li><a href="users.html"><span class="nav-icon"><i class="fas fa-users"></i></span>Users</a></li>
+            <li>
+                <a href="orders.html" class="active">
+                    <span class="nav-icon"><i class="fas fa-file-prescription"></i></span>
+                    Orders
+                    <span class="badge-count" id="sidebarPendingBadge">7</span>
+                </a>
+            </li>
+        </ul>
+
+        <p class="nav-section-title">System</p>
+        <ul>
+            <li><a href="settings.html"><span class="nav-icon"><i class="fas fa-cog"></i></span>Settings</a></li>
+            <li><a href="login.html"><span class="nav-icon"><i class="fas fa-sign-out-alt"></i></span>Logout</a></li>
+        </ul>
+    </nav>
+
+    <div class="sidebar-footer">
+        <div class="user-card">
+            <div class="user-avatar">A</div>
+            <div class="user-info">
+                <div class="user-name">Admin User</div>
+                <div class="user-role">Super Administrator</div>
+            </div>
+            <i class="fas fa-ellipsis-v" style="color:#475569;font-size:13px;margin-left:auto;"></i>
+        </div>
+    </div>
+</aside>
+
+<div class="main-wrapper">
+    <header class="topbar">
+        <div class="topbar-left">
+            <button class="menu-toggle" id="menuToggle"><i class="fas fa-bars"></i></button>
+            <div>
+                <div class="topbar-title">Order Management</div>
+                <div class="topbar-subtitle" id="topbarSubtitle">Loading orders…</div>
+            </div>
+        </div>
+        <div class="topbar-right">
+            <button class="topbar-btn" title="Refresh" onclick="renderOrdersTable()"><i class="fas fa-sync-alt"></i></button>
+            <div class="topbar-avatar" title="Dr. James Wilson">P</div>
+        </div>
+    </header>
+
+    <main class="page-content fade-in">
+        <div class="page-header">
+            <div class="page-header-title">
+                <h1>Prescription Orders</h1>
+                <p>Review, approve, and manage patient prescription orders.</p>
+            </div>
+        </div>
+
+        <div class="stats-grid" style="grid-template-columns:repeat(auto-fit,minmax(185px,1fr));margin-bottom:22px;">
+            <div class="stat-card blue"><div class="stat-info"><div class="stat-value" id="statTotal">0</div><div class="stat-label">Total Orders</div></div></div>
+            <div class="stat-card amber"><div class="stat-info"><div class="stat-value" id="statPending">0</div><div class="stat-label">Pending Review</div></div></div>
+            <div class="stat-card teal"><div class="stat-info"><div class="stat-value" id="statApproved">0</div><div class="stat-label">Approved Today</div></div></div>
+            <div class="stat-card green"><div class="stat-info"><div class="stat-value" id="statDelivered">0</div><div class="stat-label">Delivered</div></div></div>
+        </div>
+
+        <div class="card">
+            <div style="padding:16px 24px 0; border-bottom:0; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;">
+                <div class="filter-tabs" id="filterTabs">
+                    <button class="filter-tab active" onclick="setTabFilter('all',this)">All Orders <span class="tab-count" id="tabAll">0</span></button>
+                    <button class="filter-tab" onclick="setTabFilter('pending',this)">Pending <span class="tab-count" id="tabPending">0</span></button>
+                    <button class="filter-tab" onclick="setTabFilter('approved',this)">Approved <span class="tab-count" id="tabApproved">0</span></button>
+                    <button class="filter-tab" onclick="setTabFilter('delivered',this)">Delivered <span class="tab-count" id="tabDelivered">0</span></button>
+                </div>
+            </div>
+
+            <div class="table-wrapper">
+                <table class="data-table" id="ordersTable">
+                    <thead>
+                    <tr>
+                        <th style="width:40px;"><input type="checkbox" id="selectAllOrders" /></th>
+                        <th>Order ID</th>
+                        <th>Patient</th>
+                        <th>Medicines</th>
+                        <th>Date & Time</th>
+                        <th>Location / Address</th>
+                        <th>Patient Notes</th>
+                        <th>Status</th>
+                        <th style="text-align:center;">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody id="ordersBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+</div>
+
+<div class="modal-overlay" id="orderDetailModal">
+    <div class="modal" style="max-width: 800px; width: 95%; border-radius: 16px; overflow: hidden;">
+        <div class="modal-header" style="background: #f8fafc; padding: 20px 28px; border-bottom: 1px solid #e2e8f0;">
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <div style="width: 44px; height: 44px; background: #0d9488; color: white; display: flex; align-items: center; justify-content: center; border-radius: 12px; font-size: 20px;">
+                    <i class="fas fa-file-prescription"></i>
+                </div>
+                <div>
+                    <h3 id="panelOrderId" style="font-size: 18px; font-weight: 700; margin: 0; color: #1e293b;">Order #---</h3>
+                    <p id="panelOrderDate" style="font-size: 13px; margin: 2px 0 0 0; color: #64748b;">Date ---</p>
+                </div>
+            </div>
+            <button class="modal-close" onclick="closeOrderModal()" style="font-size: 20px;"><i class="fas fa-times"></i></button>
+        </div>
+
+        <div class="modal-body" id="modalBodyContent" style="padding: 0; max-height: 80vh; overflow-y: auto;">
+        </div>
+    </div>
+</div>
+
+<div class="lightbox-overlay" id="lightboxOverlay" onclick="closeLightbox()">
+    <div class="lightbox-inner">
+        <img id="lbImage" src="" alt="Prescription" />
+    </div>
+</div>
+
+<div class="modal-overlay" id="messageModal"> </div>
+<div class="modal-overlay" id="rejectModal"> </div>
+
+<script src="js/app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+<script src="js/firebase-config.js"></script>
+<script src="js/order.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    function closeOrderModal() {
+        document.getElementById('orderDetailModal').classList.remove('active');
+    }
+    function closeLightbox() {
+        document.getElementById('lightboxOverlay').classList.remove('active');
+    }
+</script>
+
+</body>
+</html>

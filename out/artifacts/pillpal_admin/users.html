@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PillPal — Users</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+    <a href="index.html" class="sidebar-logo">
+        <div class="logo-icon">💊</div>
+        <span class="logo-text">Pill<span>Pal</span></span>
+    </a>
+    <nav class="sidebar-nav">
+        <p class="nav-section-title">Main Menu</p>
+        <ul>
+            <li><a href="index.html"><span class="nav-icon"><i class="fas fa-th-large"></i></span>Dashboard</a></li>
+            <li><a href="medicines.html"><span class="nav-icon"><i class="fas fa-pills"></i></span>Medicines<span class="badge-count">3</span></a></li>
+            <li><a href="users.html" class="active"><span class="nav-icon"><i class="fas fa-users"></i></span>Users</a></li>
+            <li><a href="orders.html"><span class="nav-icon"><i class="fas fa-file-prescription"></i></span>Orders<span class="badge-count">7</span></a></li>
+
+        </ul>
+        <p class="nav-section-title">System</p>
+        <ul>
+            <li><a href="settings.html"><span class="nav-icon"><i class="fas fa-cog"></i></span>Settings</a></li>
+            <li><a href="login.html"><span class="nav-icon"><i class="fas fa-sign-out-alt"></i></span>Logout</a></li>
+        </ul>
+    </nav>
+    <div class="sidebar-footer">
+        <div class="user-card">
+            <div class="user-avatar">A</div>
+            <div class="user-info">
+                <div class="user-name">Admin User</div>
+                <div class="user-role">Super Administrator</div>
+            </div>
+        </div>
+    </div>
+</aside>
+
+<!-- MAIN -->
+<div class="main-wrapper">
+    <header class="topbar">
+        <div class="topbar-left">
+            <button class="menu-toggle" id="menuToggle"><i class="fas fa-bars"></i></button>
+            <div>
+                <div class="topbar-title">User Management</div>
+                <div class="topbar-subtitle">Registered Accounts</div>
+            </div>
+        </div>
+        <div class="topbar-right">
+            <div style="position:relative;">
+                <button class="topbar-btn" id="notifBtn"><i class="fas fa-bell"></i><span class="notif-dot pulse"></span></button>
+                <div class="notif-dropdown" id="notifDropdown">
+                    <div class="notif-header">Notifications <span style="background:rgba(59,130,246,0.1);color:#2563eb;font-size:11px;padding:2px 8px;border-radius:20px;">1 new</span></div>
+                    <div class="notif-item unread">
+                        <div class="notif-icon" style="background:rgba(59,130,246,0.1);color:#3b82f6;"><i class="fas fa-user-plus"></i></div>
+                        <div class="notif-text"><div class="notif-title">New User Registered</div><div class="notif-sub">Dr. Sarah Johnson joined the platform</div></div>
+                    </div>
+                </div>
+            </div>
+            <a href="login.html" class="topbar-btn" title="Logout"><i class="fas fa-sign-out-alt"></i></a>
+            <div class="topbar-avatar">A</div>
+        </div>
+    </header>
+
+    <main class="page-content fade-in">
+        <!-- Page Header -->
+        <div class="page-header">
+            <div class="page-header-title">
+                <div class="breadcrumb">
+                    <a href="index.html" style="color:#64748b;text-decoration:none;"><i class="fas fa-home" style="font-size:11px;"></i></a>
+                    <span>›</span><a href="index.html" style="color:#64748b;text-decoration:none;">Dashboard</a>
+                    <span>›</span><span class="bc-active">Users</span>
+                </div>
+                <h1>User Management</h1>
+                <p>Manage staff accounts, roles, and access permissions.</p>
+            </div>
+
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-grid" style="grid-template-columns:repeat(auto-fit,minmax(180px,1fr));margin-bottom:20px;">
+            <div class="stat-card blue">
+                <div class="stat-icon-wrap blue"><i class="fas fa-users"></i></div>
+                <div class="stat-info"><div class="stat-value">64</div><div class="stat-label">Total Users</div><span class="stat-change up"><i class="fas fa-arrow-up"></i> +5 this week</span></div>
+            </div>
+            <div class="stat-card teal">
+                <div class="stat-icon-wrap teal"><i class="fas fa-user-check"></i></div>
+                <div class="stat-info"><div class="stat-value">58</div><div class="stat-label">Active Users</div></div>
+            </div>
+            <div class="stat-card amber">
+                <div class="stat-icon-wrap amber"><i class="fas fa-user-shield"></i></div>
+                <div class="stat-info"><div class="stat-value">4</div><div class="stat-label">Administrators</div></div>
+            </div>
+            <div class="stat-card green">
+                <div class="stat-icon-wrap green"><i class="fas fa-user-md"></i></div>
+                <div class="stat-info"><div class="stat-value">28</div><div class="stat-label">Pharmacists</div></div>
+            </div>
+        </div>
+
+        <!-- Users Table Card -->
+        <div class="card">
+            <div class="toolbar">
+                <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;flex:1;">
+                    <div class="search-box">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" id="userSearch" placeholder="Search users..." oninput="searchUsers()" />
+                    </div>
+                    <select class="filter-select" id="roleFilter" onchange="filterUsers()">
+                        <option value="">All Roles</option>
+                        <option value="admin">Admin</option>
+                        <option value="pharmacist">Pharmacist</option>
+                        <option value="staff">Staff</option>
+                        <option value="viewer">Viewer</option>
+                    </select>
+                    <select class="filter-select" id="statusFilter" onchange="filterUsers()">
+                        <option value="">All Status</option>
+                        <option value="active">Active</option>
+                        <option value="inactive">Inactive</option>
+                        <option value="suspended">Suspended</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="table-wrapper">
+                <table class="data-table" id="usersTable">
+                    <thead>
+                    <tr>
+                        <th><input type="checkbox" id="selectAllUsers" onchange="toggleSelectAllUsers()" style="accent-color:#0d9488;" /></th>
+                        <th>User</th>
+                        <th>Address</th>
+                        <th>Contact</th>
+                    </tr>
+                    </thead>
+                    <tbody id="usersBody"></tbody>
+                </table>
+            </div>
+
+            <div class="pagination">
+                <div class="pagination-info" id="userPaginationInfo">Showing 1–10 of 20 entries</div>
+                <div class="pagination-btns">
+                    <button class="page-btn" onclick="changeUserPage(-1)"><i class="fas fa-chevron-left" style="font-size:11px;"></i></button>
+                    <button class="page-btn active" id="upg1" onclick="setUserPage(1)">1</button>
+                    <button class="page-btn" id="upg2" onclick="setUserPage(2)">2</button>
+                    <button class="page-btn" onclick="changeUserPage(1)"><i class="fas fa-chevron-right" style="font-size:11px;"></i></button>
+                </div>
+            </div>
+        </div>
+
+    </main>
+</div>
+
+<script src="js/app.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script src="js/firebase-config.js"></script>
+<script src="js/users.js"></script>
+</body>
+</html>

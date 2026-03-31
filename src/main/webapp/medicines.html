@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PillPal — Medicines</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+    <a href="index.html" class="sidebar-logo">
+        <div class="logo-icon">💊</div>
+        <span class="logo-text">Pill<span>Pal</span></span>
+    </a>
+    <nav class="sidebar-nav">
+        <p class="nav-section-title">Main Menu</p>
+        <ul>
+            <li><a href="index.html"><span class="nav-icon"><i class="fas fa-th-large"></i></span>Dashboard</a></li>
+            <li>
+                <a href="medicines.html" class="active">
+                    <span class="nav-icon"><i class="fas fa-pills"></i></span>Medicines
+                    <span class="badge-count">3</span>
+                </a>
+            </li>
+            <li><a href="users.html"><span class="nav-icon"><i class="fas fa-users"></i></span>Users</a></li>
+            <li><a href="orders.html"><span class="nav-icon"><i class="fas fa-file-prescription"></i></span>Orders<span class="badge-count">7</span></a></li>
+
+        </ul>
+        <p class="nav-section-title">System</p>
+        <ul>
+            <li><a href="settings.html"><span class="nav-icon"><i class="fas fa-cog"></i></span>Settings</a></li>
+            <li><a href="login.html"><span class="nav-icon"><i class="fas fa-sign-out-alt"></i></span>Logout</a></li>
+        </ul>
+    </nav>
+    <div class="sidebar-footer">
+        <div class="user-card">
+            <div class="user-avatar">A</div>
+            <div class="user-info">
+                <div class="user-name">Admin User</div>
+                <div class="user-role">Super Administrator</div>
+            </div>
+        </div>
+    </div>
+</aside>
+
+<!-- MAIN -->
+<div class="main-wrapper">
+    <!-- TOPBAR -->
+    <header class="topbar">
+        <div class="topbar-left">
+            <button class="menu-toggle" id="menuToggle"><i class="fas fa-bars"></i></button>
+            <div>
+                <div class="topbar-title">Medicine Management</div>
+                <div class="topbar-subtitle">Inventory Control</div>
+            </div>
+        </div>
+        <div class="topbar-right">
+            <div style="position:relative;">
+                <button class="topbar-btn" id="notifBtn" title="Notifications">
+                    <i class="fas fa-bell"></i>
+                    <span class="notif-dot pulse"></span>
+                </button>
+                <div class="notif-dropdown" id="notifDropdown">
+                    <div class="notif-header">Notifications <span style="background:rgba(239,68,68,0.1);color:#dc2626;font-size:11px;padding:2px 8px;border-radius:20px;">4 new</span></div>
+                    <div class="notif-item unread">
+                        <div class="notif-icon" style="background:rgba(239,68,68,0.1);color:#ef4444;"><i class="fas fa-exclamation-triangle"></i></div>
+                        <div class="notif-text"><div class="notif-title">Low Stock Alert</div><div class="notif-sub">Amoxicillin — only 12 units left</div></div>
+                    </div>
+                    <div class="notif-item unread">
+                        <div class="notif-icon" style="background:rgba(245,158,11,0.1);color:#f59e0b;"><i class="fas fa-clock"></i></div>
+                        <div class="notif-text"><div class="notif-title">Expiry Warning</div><div class="notif-sub">Ibuprofen expires in 15 days</div></div>
+                    </div>
+                </div>
+            </div>
+            <a href="login.html" class="topbar-btn" title="Logout"><i class="fas fa-sign-out-alt"></i></a>
+            <div class="topbar-avatar">A</div>
+        </div>
+    </header>
+
+    <!-- PAGE CONTENT -->
+    <main class="page-content fade-in">
+
+        <!-- Page Header -->
+        <div class="page-header">
+            <div class="page-header-title">
+                <div class="breadcrumb">
+                    <a href="index.html" style="color:#64748b;text-decoration:none;"><i class="fas fa-home" style="font-size:11px;"></i></a>
+                    <span>›</span><a href="index.html" style="color:#64748b;text-decoration:none;">Dashboard</a>
+                    <span>›</span><span class="bc-active">Medicines</span>
+                </div>
+                <h1>Medicine Inventory</h1>
+                <p>Manage all medicines, stock levels, and expiry dates.</p>
+            </div>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                <button class="btn-primary" onclick="openModal('addMedicineModal')">
+                    <i class="fas fa-plus"></i> Add Medicine
+                </button>
+            </div>
+        </div>
+
+        <!-- Stats row -->
+        <div class="stats-grid" style="grid-template-columns:repeat(auto-fit,minmax(180px,1fr));margin-bottom:20px;">
+            <div class="stat-card teal">
+                <div class="stat-icon-wrap teal"><i class="fas fa-pills"></i></div>
+                <div class="stat-info">
+                    <div class="stat-value" id="stat-total">0</div>
+                    <div class="stat-label">Total Medicines</div>
+                </div>
+            </div>
+            <div class="stat-card green">
+                <div class="stat-icon-wrap green"><i class="fas fa-check-circle"></i></div>
+                <div class="stat-info">
+                    <div class="stat-value" id="stat-instock">0</div>
+                    <div class="stat-label">In Stock</div>
+                </div>
+            </div>
+            <div class="stat-card amber">
+                <div class="stat-icon-wrap amber"><i class="fas fa-exclamation-triangle"></i></div>
+                <div class="stat-info">
+                    <div class="stat-value" id="stat-lowstock">0</div>
+                    <div class="stat-label">Low Stock</div>
+                </div>
+            </div>
+            <div class="stat-card blue" style="--before-bg:linear-gradient(90deg,#ef4444,#dc2626);">
+                <div class="stat-icon-wrap" style="background:rgba(239,68,68,0.1);color:#ef4444;"><i class="fas fa-times-circle"></i></div>
+                <div class="stat-info">
+                    <div class="stat-value" id="stat-outofstock" style="color:#ef4444;">0</div>
+                    <div class="stat-label">Out of Stock</div>
+                </div>
+            </div>
+            <div class="stat-card green" style="">
+                <div class="stat-icon-wrap" style="background:rgba(245,158,11,0.1);color:#f59e0b;"><i class="fas fa-calendar-times"></i></div>
+                <div class="stat-info">
+                    <div class="stat-value" id="stat-expiring" style="color:#f59e0b;">0</div>
+                    <div class="stat-label">Expiring Soon</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Table Card -->
+        <div class="card">
+            <!-- Toolbar -->
+            <div class="toolbar">
+                <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;flex:1;">
+                    <div class="search-box">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" id="medSearch" placeholder="Search medicines..." oninput="searchMeds()" />
+                    </div>
+                    <select class="filter-select" id="catFilter" onchange="filterMeds()">
+                        <option value="">All Categories</option>
+                        <option value="antibiotic">Antibiotic</option>
+                        <option value="analgesic">Analgesic</option>
+                        <option value="vitamin">Vitamin</option>
+                        <option value="antacid">Antacid</option>
+                        <option value="cardiovascular">Cardiovascular</option>
+                        <option value="other">Other</option>
+                    </select>
+                    <select class="filter-select" id="stockFilter" onchange="filterMeds()">
+                        <option value="">All Stock Levels</option>
+                        <option value="high">In Stock</option>
+                        <option value="medium">Low Stock</option>
+                        <option value="low">Out of Stock</option>
+                    </select>
+                </div>
+                <div class="toolbar-actions">
+                    <button class="btn-outline" style="padding:8px 12px;border-color:#0d9488;color:#0d9488;" title="List View">
+                        <i class="fas fa-list"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Table -->
+            <div class="table-wrapper">
+                <table class="data-table" id="medsTable">
+                    <thead>
+                    <tr>
+                        <th><input type="checkbox" id="selectAll" onchange="toggleSelectAll()" style="accent-color:#0d9488;" /></th>
+                        <th>Medicine Details</th>
+                        <th>Category</th>
+                        <th>Unit Price</th>
+                        <th>Stock Level</th>
+                        <th>Expiry Date</th>
+                        <th>Status</th>
+                        <th style="text-align:center;">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody id="medsBody">
+                    <!-- Rows injected by JS -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            <div class="pagination">
+                <div class="pagination-info" id="paginationInfo">Showing 1–10 of 20 entries</div>
+                <div class="pagination-btns">
+                    <button class="page-btn" onclick="changePage(-1)"><i class="fas fa-chevron-left" style="font-size:11px;"></i></button>
+                    <button class="page-btn active" id="pg1" onclick="setPage(1)">1</button>
+                    <button class="page-btn" id="pg2" onclick="setPage(2)">2</button>
+                    <button class="page-btn" onclick="changePage(1)"><i class="fas fa-chevron-right" style="font-size:11px;"></i></button>
+                </div>
+            </div>
+        </div>
+
+    </main>
+</div>
+
+<!-- ADD MEDICINE MODAL -->
+<div class="modal-overlay" id="addMedicineModal">
+    <div class="modal">
+        <div class="modal-header">
+            <span class="modal-title"><i class="fas fa-plus" style="color:#0d9488;margin-right:8px;"></i>Add New Medicine</span>
+            <button class="modal-close" onclick="closeModal('addMedicineModal')"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="modal-body">
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Medicine Name <span class="required">*</span></label>
+                    <input type="text" class="form-control" id="newMedName" placeholder="e.g. Paracetamol 500mg" />
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Category <span class="required">*</span></label>
+                    <select class="form-control" id="newMedCat">
+                        <option value="">Select category</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Unit Price ($)</label>
+                    <input type="number" class="form-control" id="newMedPrice" placeholder="0.00" step="0.01" min="0" />
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Stock Quantity <span class="required">*</span></label>
+                    <input type="number" class="form-control" id="newMedStock" placeholder="0" min="0" />
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Manufacture Date</label>
+                    <input type="date" class="form-control" id="newMedMfg" />
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Expiry Date <span class="required">*</span></label>
+                    <input type="date" class="form-control" id="newMedExpiry" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Batch Number</label>
+                <input type="text" class="form-control" id="newMedBatch" placeholder="e.g. BATCH-2024-01" />
+            </div>
+
+            <div class="form-group" style="margin-bottom: 20px;">
+                <label class="form-label">Medicine Image <span class="required">*</span></label>
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <input type="file" class="form-control" id="newMedImage" accept="image/*" onchange="previewImage(event)" style="flex: 1;" />
+
+                    <div id="imagePreviewContainer" style="width: 50px; height: 50px; border: 1px dashed #cbd5e1; border-radius: 8px; display: flex; align-items: center; justify-content: center; overflow: hidden; background: #f8fafc;">
+                        <img id="imagePreview" src="#" alt="preview" style="display: none; width: 100%; height: 100%; object-fit: cover;" />
+                        <i id="previewIcon" class="fas fa-image" style="color: #94a3b8;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-outline" onclick="closeModal('addMedicineModal')">Cancel</button>
+            <button class="btn-primary" onclick="addMedicine()"><i class="fas fa-plus"></i> Add Medicine</button>
+        </div>
+    </div>
+</div>
+
+<!-- EDIT MEDICINE MODAL -->
+<div class="modal-overlay" id="editMedicineModal">
+    <div class="modal">
+        <div class="modal-header">
+            <span class="modal-title"><i class="fas fa-pen" style="color:#3b82f6;margin-right:8px;"></i>Edit Medicine</span>
+            <button class="modal-close" onclick="closeModal('editMedicineModal')"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="modal-body">
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Medicine Name <span class="required">*</span></label>
+                    <input type="text" class="form-control" id="editMedName" />
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Category <span class="required">*</span></label>
+                    <select class="form-control" id="editMedCat">
+                        <option value="">Select category</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Unit Price ($) <span class="required">*</span></label>
+                    <input type="number" class="form-control" id="editMedPrice" step="0.01" />
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Stock Quantity <span class="required">*</span></label>
+                    <input type="number" class="form-control" id="editMedStock" />
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Expiry Date <span class="required">*</span></label>
+                    <input type="date" class="form-control" id="editMedExpiry" />
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Status <span class="required">*</span></label>
+                    <select class="form-control" id="editMedStatus">
+                        <option value="In Stock">In Stock</option>
+                        <option value="Low Stock">Low Stock</option>
+                        <option value="Out of Stock">Out of Stock</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-outline" onclick="closeModal('editMedicineModal')">Cancel</button>
+            <button class="btn-primary" onclick="saveEdit()"><i class="fas fa-save"></i> Save Changes</button>
+        </div>
+    </div>
+</div>
+
+<!-- DELETE CONFIRM -->
+<div class="modal-overlay" id="deleteConfirmModal">
+    <div class="modal" style="max-width:400px;">
+        <div class="modal-header">
+            <span class="modal-title">Confirm Delete</span>
+            <button class="modal-close" onclick="closeModal('deleteConfirmModal')"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="modal-body">
+            <div style="text-align:center;padding:8px 0;">
+                <div style="width:60px;height:60px;background:rgba(239,68,68,0.1);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:26px;color:#ef4444;">
+                    <i class="fas fa-trash-alt"></i>
+                </div>
+                <p style="font-size:15px;font-weight:600;color:#1e293b;margin-bottom:8px;">Delete Medicine?</p>
+                <p style="font-size:13.5px;color:#64748b;">Are you sure you want to delete <strong id="deleteItemName"></strong>? This cannot be undone.</p>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-outline" onclick="closeModal('deleteConfirmModal')">Cancel</button>
+            <button class="btn-danger" id="confirmDeleteBtn"><i class="fas fa-trash"></i> Delete</button>
+        </div>
+    </div>
+</div>
+
+<script src="js/app.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="js/firebase-config.js"></script>
+<script src="js/medicines.js"></script>
+</body>
+</html>
